@@ -50,8 +50,12 @@
               <td align="center"><?= $row['nama_mahasiswa']; ?></td>
               <td align="center"><?= $row['status_penilaian']; ?></td>
               <td align="center">
-                <a href="<?= BASE_URL;?>/lomba/edit/<?= $row['id_pengajuan']; ?>" class="btn btn-sm btn-success" title="Update Berikan Penilaian"><i class="fas fa-edit"></i></a>
+                <?php if ($row['status_penilaian']=="Berkas Revisi"||$row['status_penilaian']=="Berkas Tervalidasi"){?>
+                <a href="<?= BASE_URL;?>/lomba/edit/<?= $row['id_pengajuan']; ?>" class="btn btn-sm btn-success" title="Berikan Penilaian Ulang"><i class="fas fa-edit"></i></a>
+                <?php } ?>
+                <?php if ($row['status_penilaian']=="Pengajuan Berkas") {?>
                 <a href="<?= BASE_URL;?>/lomba/penilaian/<?= $row['id_pengajuan']; ?>" class="btn btn-sm btn-warning" title="Berikan Penilaian"><i class="fas fa-edit"></i></a>
+                <?php } ?>
                 <a href="<?= BASE_URL;?>/lomba/hapus/<?= $row['id_pengajuan']; ?>" class="btn btn-sm btn-danger" title="Hapus Pengajuan"><i class="fas fa-trash"></i></a>
               </td>
             </tr>
