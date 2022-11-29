@@ -20,14 +20,12 @@
             </div>
         </div>
         </br>
-        <div class="col-sm-12">
-        </div>
         <form class="form-horizontal" method="POST" action="<?= BASE_URL;?>/instansi/simpanInstansi" enctype="multipart/form-data">
             <div class="card-body">
                 <div class="row">
                     <input type="hidden" name="id_pengajuan" value="<?= $data['pengajuan_instansi']['id_pengajuan']; ?>">
                     <div class="col-md-1">
-                        <img src="" alt="">
+                        <img src="<?= BASE_URL; ?>/file/foto-mahasiswa/<?= $data['pengajuan_instansi']['foto_mahasiswa']; ?>" alt="" class="img-fluid">
                     </div>
                     <div class="col-md-3">
                         <table class="table table-responsive">

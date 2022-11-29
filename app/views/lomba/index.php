@@ -11,7 +11,7 @@
     </div>
     <div class="card-body">
       <div class="col-md-5">
-        <form class="navbar-search" method="POST" action="<?= BASE_URL;?>/instansi/cari">
+        <form class="navbar-search" method="POST" action="<?= BASE_URL;?>/lomba/cari">
           <div class="input-group">
             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
               aria-label="Search" aria-describedby="basic-addon2" name="key">
