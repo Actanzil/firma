@@ -8,7 +8,8 @@ class Instansi extends Controller {
 			header('location: '. BASE_URL . '/login');
 			exit;
 		}
-	} 
+	}
+
 	public function index()
 	{
 		$data['title'] = 'Data Instansi';
@@ -19,6 +20,7 @@ class Instansi extends Controller {
 		$this->view('instansi/index', $data);
 		$this->view('templates/footer');
 	}
+	
 	public function cari()
 	{
 		$data['title'] = 'Data Instansi';
@@ -31,10 +33,11 @@ class Instansi extends Controller {
 		$this->view('templates/footer');
 	}
 
-	public function penilaian($id_pengajuan) 
+	public function penilaian($kode_pengajuan) 
 	{
 		$data['title'] = 'Penilaian Berkas Instansi';
-		$data['pengajuan_instansi'] = $this->model('InstansiModel')->getInstansiById($id_pengajuan);		
+		$data['pengajuan'] = $this->model('InstansiModel')->getInstansiById($kode_pengajuan);
+		$data['objek'] = $this->model('InstansiModel')->getObjekPkl($kode_pengajuan);		
 		$this->view('templates/header', $data);
 		$this->view('templates/sidebar', $data);
 		$this->view('templates/navbar', $data);
@@ -42,11 +45,12 @@ class Instansi extends Controller {
 		$this->view('templates/footer');
 	}
 
-	public function edit($id_pengajuan)
+	public function edit($kode_pengajuan)
 	{
 		$data['title'] = 'Ubah Penilaian Berkas Instansi';
-		$data['pengajuan_instansi'] = $this->model('InstansiModel')->getInstansiById($id_pengajuan);
-		$data['penilaian_instansi'] = $this->model('InstansiModel')->getStatusPenilaian($id_pengajuan);
+		$data['pengajuan'] = $this->model('InstansiModel')->getInstansiById($kode_pengajuan);
+		$data['nilai'] = $this->model('InstansiModel')->getNilaiInstansi($kode_pengajuan);
+		$data['objek'] = $this->model('InstansiModel')->getObjekPkl($kode_pengajuan);
 		$this->view('templates/header', $data);
 		$this->view('templates/sidebar', $data);
 		$this->view('templates/navbar', $data);

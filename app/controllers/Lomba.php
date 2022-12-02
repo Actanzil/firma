@@ -31,10 +31,10 @@ class Lomba extends Controller {
 		$this->view('templates/footer');
 	}
 
-	public function penilaian($id_pengajuan) 
+	public function penilaian($kode_pengajuan) 
 	{
 		$data['title'] = 'Penilaian Berkas Lomba';
-		$data['pengajuan_lomba'] = $this->model('LombaModel')->getLombaById($id_pengajuan);		
+		$data['pengajuan'] = $this->model('LombaModel')->getLombaById($kode_pengajuan);		
 		$this->view('templates/header', $data);
 		$this->view('templates/sidebar', $data);
 		$this->view('templates/navbar', $data);
@@ -42,11 +42,11 @@ class Lomba extends Controller {
 		$this->view('templates/footer');
 	}
 
-	public function edit($id_pengajuan)
+	public function edit($kode_pengajuan)
 	{
 		$data['title'] = 'Detail Lomba';
-		$data['pengajuan_lomba'] = $this->model('LombaModel')->getLombaById($id_pengajuan);
-		$data['penilaian_lomba'] = $this->model('LombaModel')->getStatusPenilaian($id_pengajuan);
+		$data['pengajuan'] = $this->model('LombaModel')->getLombaById($kode_pengajuan);
+		$data['nilai'] = $this->model('LombaModel')->getNilaiLomba($kode_pengajuan);
 		$this->view('templates/header', $data);
 		$this->view('templates/sidebar', $data);
 		$this->view('templates/navbar', $data);

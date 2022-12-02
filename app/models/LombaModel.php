@@ -2,7 +2,7 @@
 
 class LombaModel {
 	
-	private $table = 'pengajuan_lomba';
+	private $table = 'pengajuan';
 	private $db;
 
 	public function __construct()
@@ -12,53 +12,73 @@ class LombaModel {
 
 	public function getAllLomba()
 	{
-		$this->db->query("	SELECT pengajuan_lomba.*, penilaian_lomba.status_penilaian 
-							FROM " . $this->table . "
-							JOIN penilaian_lomba ON penilaian_lomba.id_pengajuan = pengajuan_lomba.id_pengajuan
-							ORDER BY penilaian_lomba.status_penilaian DESC");
+		$this->db->query("	SELECT 	mahasiswa.nim, 
+									mahasiswa.nama_mahasiswa,
+									pengajuan.kode_pengajuan, 
+									pengajuan.status
+      						FROM " . $this->table . " 
+      						INNER JOIN candidate ON pengajuan.kode_pengajuan = candidate.kode_pengajuan 
+      						INNER JOIN mahasiswa ON candidate.nim = mahasiswa.nim
+							INNER JOIN kategori_pkl ON pengajuan.kategori_pkl = kategori_pkl.id
+							WHERE kategori_pkl.id = 2
+							ORDER BY mahasiswa.nim ASC");
 		return $this->db->resultSet();
 	}
 
-	public function getlombaById($id_pengajuan)
+	public function getlombaById($kode_pengajuan)
 	{
-		$this->db->query("	SELECT pengajuan_lomba.*, penilaian_lomba.status_penilaian 
-							FROM " . $this->table . "
-							JOIN penilaian_lomba ON penilaian_lomba.id_pengajuan = pengajuan_lomba.id_pengajuan 
-							WHERE pengajuan_lomba.id_pengajuan=:id_pengajuan");
-		$this->db->bind('id_pengajuan',$id_pengajuan);
+		$this->db->query("	SELECT 	berkas_lomba.*,
+									pengajuan.kode_pengajuan,
+									pengajuan.awal_pelaksanaan,
+									pengajuan.akhir_pelaksanaan,
+									pengajuan.status,
+									berkas.khs,
+									berkas.proposal_lomba,
+									berkas.sertifikat_lomba,
+									mahasiswa.*
+							FROM " . $this->table . "	
+							INNER JOIN berkas ON pengajuan.kode_pengajuan = berkas.kode_pengajuan
+							INNER JOIN berkas_lomba ON pengajuan.kode_pengajuan = berkas_lomba.kode_pengajuan
+							INNER JOIN candidate ON pengajuan.kode_pengajuan = candidate.kode_pengajuan 
+      						INNER JOIN mahasiswa ON candidate.nim = mahasiswa.nim
+							INNER JOIN kategori_pkl ON pengajuan.kategori_pkl = kategori_pkl.id 
+							WHERE pengajuan.kode_pengajuan = :kode_pengajuan AND kategori_pkl.id = 2");
+		$this->db->bind('kode_pengajuan',$kode_pengajuan);
 		return $this->db->single();
 	}
 
-	public function getStatusPenilaian($id_pengajuan)
+	public function getNilaiLomba($kode_pengajuan)
 	{
-		$this->db->query("	SELECT *
-							FROM penilaian_lomba
-							WHERE id_pengajuan=:id_pengajuan");
-		$this->db->bind('id_pengajuan',$id_pengajuan);
+		$this->db->query("	SELECT 	*
+							FROM nilai_lomba
+							WHERE kode_pengajuan=:kode_pengajuan");
+		$this->db->bind('kode_pengajuan',$kode_pengajuan);
 		return $this->db->single();
 	}
 
 	public function penilaianLomba($data)
 	{
-		$query = "	UPDATE penilaian_lomba 
-					SET kategori_lomba			=:kategori_lomba, 
-						tingkat_lomba			=:tingkat_lomba,
-						nama_lomba				=:nama_lomba,
-						penyelenggara			=:penyelenggara,
-						produk_lomba			=:produk_lomba, 
-						hasil_lomba				=:hasil_lomba, 
-						pembimbing				=:pembimbing, 
-						url_informasi_lomba		=:url_informasi_lomba,
-						tempat_pelaksanaan		=:tempat_pelaksanaan,
-						waktu_pelaksanaan		=:waktu_pelaksanaan,
-						sumber_dana				=:sumber_dana,
-						proposal_lomba			=:proposal_lomba,
-						sertifikat_lomba		=:sertifikat_lomba,
-						sks_lulus				=:sks_lulus,
-						status_penilaian		=:status_penilaian
-					WHERE id_pengajuan			=:id_pengajuan";
+		$query = "	UPDATE nilai_lomba, pengajuan 
+					SET nilai_lomba.kategori_lomba			=:kategori_lomba, 
+						nilai_lomba.tingkat_lomba			=:tingkat_lomba,
+						nilai_lomba.nama_lomba				=:nama_lomba,
+						nilai_lomba.penyelenggara			=:penyelenggara,
+						nilai_lomba.produk_lomba			=:produk_lomba, 
+						nilai_lomba.hasil_lomba				=:hasil_lomba, 
+						nilai_lomba.pembimbing				=:pembimbing, 
+						nilai_lomba.url_informasi_lomba		=:url_informasi_lomba,
+						nilai_lomba.tempat_pelaksanaan		=:tempat_pelaksanaan,
+						nilai_lomba.waktu_pelaksanaan		=:waktu_pelaksanaan,
+						nilai_lomba.sumber_dana				=:sumber_dana,
+						nilai_lomba.proposal_lomba			=:proposal_lomba,
+						nilai_lomba.sertifikat_lomba		=:sertifikat_lomba,
+						nilai_lomba.khs						=:khs,
+						nilai_lomba.sks						=:sks,
+						pengajuan.status					=:status
+					WHERE nilai_lomba.kode_pengajuan		=:kode_pengajuan
+					AND pengajuan.kode_pengajuan			=:kode_pengajuan";
 		$this->db->query($query);
-		$this->db->bind('id_pengajuan',$data['id_pengajuan']);
+		$this->db->bind('kode_pengajuan',$data['kode_pengajuan']);
 		$this->db->bind('kategori_lomba', $data['inlineRadioOptions']);
 		$this->db->bind('tingkat_lomba', $data['inlineRadioOptions1']);
 		$this->db->bind('nama_lomba', $data['inlineRadioOptions2']);
@@ -72,8 +92,9 @@ class LombaModel {
 		$this->db->bind('sumber_dana', $data['inlineRadioOptions10']);
 		$this->db->bind('proposal_lomba', $data['inlineRadioOptions11']);
 		$this->db->bind('sertifikat_lomba', $data['inlineRadioOptions12']);
-		$this->db->bind('sks_lulus', $data['inlineRadioOptions13']);
-		$this->db->bind('status_penilaian', $data['status_penilaian']);
+		$this->db->bind('khs', $data['inlineRadioOptions13']);
+		$this->db->bind('sks', $data['inlineRadioOptions14']);
+		$this->db->bind('status', $data['status']);
 		$this->db->execute();
 
 		return $this->db->rowCount();
@@ -81,25 +102,27 @@ class LombaModel {
 
 	public function updatePenilaianLomba($data)
 	{
-		$query = "	UPDATE penilaian_lomba 
-					SET kategori_lomba			=:kategori_lomba, 
-						tingkat_lomba			=:tingkat_lomba,
-						nama_lomba				=:nama_lomba,
-						penyelenggara			=:penyelenggara,
-						produk_lomba			=:produk_lomba, 
-						hasil_lomba				=:hasil_lomba, 
-						pembimbing				=:pembimbing, 
-						url_informasi_lomba		=:url_informasi_lomba,
-						tempat_pelaksanaan		=:tempat_pelaksanaan,
-						waktu_pelaksanaan		=:waktu_pelaksanaan,
-						sumber_dana				=:sumber_dana,
-						proposal_lomba			=:proposal_lomba,
-						sertifikat_lomba		=:sertifikat_lomba,
-						sks_lulus				=:sks_lulus,
-						status_penilaian		=:status_penilaian
-					WHERE id_pengajuan			=:id_pengajuan";
+		$query = "	UPDATE nilai_lomba, pengajuan 
+					SET nilai_lomba.kategori_lomba			=:kategori_lomba, 
+						nilai_lomba.tingkat_lomba			=:tingkat_lomba,
+						nilai_lomba.nama_lomba				=:nama_lomba,
+						nilai_lomba.penyelenggara			=:penyelenggara,
+						nilai_lomba.produk_lomba			=:produk_lomba, 
+						nilai_lomba.hasil_lomba				=:hasil_lomba, 
+						nilai_lomba.pembimbing				=:pembimbing, 
+						nilai_lomba.url_informasi_lomba		=:url_informasi_lomba,
+						nilai_lomba.tempat_pelaksanaan		=:tempat_pelaksanaan,
+						nilai_lomba.waktu_pelaksanaan		=:waktu_pelaksanaan,
+						nilai_lomba.sumber_dana				=:sumber_dana,
+						nilai_lomba.proposal_lomba			=:proposal_lomba,
+						nilai_lomba.sertifikat_lomba		=:sertifikat_lomba,
+						nilai_lomba.khs						=:khs,
+						nilai_lomba.sks						=:sks,
+						pengajuan.status					=:status
+					WHERE nilai_lomba.kode_pengajuan		=:kode_pengajuan
+					AND pengajuan.kode_pengajuan			=:kode_pengajuan";
 		$this->db->query($query);
-		$this->db->bind('id_pengajuan',$data['id_pengajuan']);
+		$this->db->bind('kode_pengajuan',$data['kode_pengajuan']);
 		$this->db->bind('kategori_lomba', $data['inlineRadioOptions']);
 		$this->db->bind('tingkat_lomba', $data['inlineRadioOptions1']);
 		$this->db->bind('nama_lomba', $data['inlineRadioOptions2']);
@@ -113,17 +136,18 @@ class LombaModel {
 		$this->db->bind('sumber_dana', $data['inlineRadioOptions10']);
 		$this->db->bind('proposal_lomba', $data['inlineRadioOptions11']);
 		$this->db->bind('sertifikat_lomba', $data['inlineRadioOptions12']);
-		$this->db->bind('sks_lulus', $data['inlineRadioOptions13']);
-		$this->db->bind('status_penilaian', $data['status_penilaian']);
+		$this->db->bind('khs', $data['inlineRadioOptions13']);
+		$this->db->bind('sks', $data['inlineRadioOptions14']);
+		$this->db->bind('status', $data['status']);
 		$this->db->execute();
 
 		return $this->db->rowCount();
 	}
 
-	public function deleteLomba($id_pengajuan)
+	public function deleteLomba($kode_pengajuan)
 	{
-		$this->db->query('DELETE FROM ' . $this->table . ' WHERE id_pengajuan=:id_pengajuan');
-		$this->db->bind('id_pengajuan',$id_pengajuan);
+		$this->db->query('DELETE FROM ' . $this->table . ' WHERE kode_pengajuan=:kode_pengajuan');
+		$this->db->bind('kode_pengajuan',$kode_pengajuan);
 		$this->db->execute();
 
 		return $this->db->rowCount();
@@ -132,12 +156,16 @@ class LombaModel {
 	public function cariLomba()
 	{
 		$key = $_POST['key'];
-		$this->db->query("	SELECT pengajuan_lomba.*, penilaian_lomba.status_penilaian 
-							FROM " . $this->table . "
-							JOIN penilaian_lomba ON penilaian_lomba.id_pengajuan = pengajuan_lomba.id_pengajuan 
-							WHERE pengajuan_lomba.nama_mahasiswa
-							LIKE :key
-							ORDER BY penilaian_lomba.status_penilaian DESC");
+		$this->db->query("	SELECT 	mahasiswa.nim, 
+									mahasiswa.nama_mahasiswa,
+									pengajuan.kode_pengajuan, 
+									pengajuan.status
+      						FROM " . $this->table . " 
+      						INNER JOIN candidate ON pengajuan.kode_pengajuan = candidate.kode_pengajuan 
+      						INNER JOIN mahasiswa ON candidate.nim = mahasiswa.nim
+							INNER JOIN kategori_pkl ON pengajuan.kategori_pkl = kategori_pkl.id
+							WHERE mahasiswa.nama_mahasiswa LIKE :key AND kategori_pkl.id = 2
+							ORDER BY mahasiswa.nim ASC");
 		$this->db->bind('key',"%$key%");
 		return $this->db->resultSet();
 	}

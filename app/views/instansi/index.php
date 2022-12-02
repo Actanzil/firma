@@ -46,17 +46,18 @@
             ?>
             <tr>
               <td align="center"><?= $no; ?></td>
-              <td align="center"><?= $row['nim_mahasiswa']; ?></td>
+              <td align="center"><?= $row['nim']; ?></td>
               <td align="center"><?= $row['nama_mahasiswa']; ?></td>
-              <td align="center"><?= $row['status_penilaian']; ?></td>
+              <td align="center"><?= $row['status']; ?></td>
               <td align="center">
-                <?php if ($row['status_penilaian']=="Berkas Revisi"||$row['status_penilaian']=="Berkas Tervalidasi"){?>
-                <a href="<?= BASE_URL;?>/instansi/edit/<?= $row['id_pengajuan']; ?>" class="btn btn-sm btn-success" title="Berikan Penilaian Ulang"><i class="fas fa-edit"></i></a>
+                <?php //var_dump($row['kode_pengajuan']); ?>
+                <?php if ($row['status']=="Berkas Revisi"||$row['status']=="Berkas Tervalidasi"){?>
+                <a href="<?= BASE_URL;?>/instansi/edit/<?= $row['kode_pengajuan']; ?>" class="btn btn-sm btn-success" title="Berikan Penilaian Ulang"><i class="fas fa-edit"></i></a>
                 <?php } ?>
-                <?php if ($row['status_penilaian']=="Pengajuan Berkas") {?>
-                <a href="<?= BASE_URL;?>/instansi/penilaian/<?= $row['id_pengajuan']; ?>" class="btn btn-sm btn-warning" title="Berikan Penilaian"><i class="fas fa-edit"></i></a>
+                <?php if ($row['status']=="Pengajuan Berkas") {?>
+                <a href="<?= BASE_URL;?>/instansi/penilaian/<?= $row['kode_pengajuan']; ?>" class="btn btn-sm btn-warning" title="Berikan Penilaian"><i class="fas fa-edit"></i></a>
                 <?php } ?>
-                <a href="<?= BASE_URL;?>/instansi/hapus/<?= $row['id_pengajuan']; ?>" class="btn btn-sm btn-danger" title="Hapus Pengajuan"><i class="fas fa-trash"></i></a>
+                <a href="<?= BASE_URL;?>/instansi/hapus/<?= $row['kode_pengajuan']; ?>" class="btn btn-sm btn-danger" title="Hapus Pengajuan"><i class="fas fa-trash"></i></a>
               </td>
             </tr>
             <?php 
