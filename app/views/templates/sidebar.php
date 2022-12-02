@@ -8,7 +8,7 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-                <div class="sidebar-brand-text mx-3">Admin FIRMA</div>
+                <div class="sidebar-brand-text mx-3">FIRMA</div>
             </a>
 
             <!-- Divider -->
@@ -23,11 +23,6 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Data Utama
-            </div>
 
             <!-- Nav Item - Data PKL Instansi -->
             <li class="nav-item">
@@ -44,22 +39,16 @@
                     <span>PKL Lomba</span>
                 </a>
             </li>
-
-            <!-- Nav Item - Keluar -->
+            
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+            
             <li class="nav-item">
                 <a class="nav-link" href="<?= BASE_URL; ?>/logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Keluar</span>
                 </a>
             </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
 
         </ul>
         <!-- End of Sidebar -->
