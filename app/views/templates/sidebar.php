@@ -48,7 +48,7 @@
             <!-- Nav Item - Keluar -->
             <li class="nav-item">
                 <a class="nav-link" href="<?= BASE_URL; ?>/logout">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-sign-out-alt"></i>
                     <span>Keluar</span>
                 </a>
             </li>
