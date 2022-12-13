@@ -128,15 +128,6 @@ class InstansiModel {
 		return $this->db->rowCount();
 	}
 
-	public function deleteInstansi($kode_pengajuan)
-	{
-		$this->db->query('DELETE FROM ' . $this->table . ' WHERE kode_pengajuan=:kode_pengajuan');
-		$this->db->bind('kode_pengajuan',$kode_pengajuan);
-		$this->db->execute();
-
-		return $this->db->rowCount();
-	}
-
 	public function cariInstansi()
 	{
 		$key = $_POST['key'];

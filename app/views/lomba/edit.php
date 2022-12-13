@@ -28,15 +28,15 @@
                         <table class="table table-responsive">
                             <tbody>
                                 <tr>
-                                    <td width="50%"><strong>Nama<strong></td>
+                                    <td width="50%"><strong>Nama Mahasiswa<strong></td>
                                     <td width="50%"><?= $data['pengajuan']['nama_mahasiswa']; ?></td>
                                 </tr>
                                 <tr>
-                                    <td width="40%"><strong>NIM<strong></td>
+                                    <td width="40%"><strong>NIM Mahasiswa<strong></td>
                                     <td width="60%"><?= $data['pengajuan']['nim']; ?></td>
                                 </tr>
                                  <tr>
-                                    <td width="40%"><strong>Email<strong></td>
+                                    <td width="40%"><strong>Email Mahasiswa<strong></td>
                                     <td width="60%"><?= $data['pengajuan']['email']; ?></td>
                                 </tr>
                                  <tr>

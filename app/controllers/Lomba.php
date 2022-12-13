@@ -78,16 +78,4 @@ class Lomba extends Controller {
 			exit;	
 		}
 	}
-
-	public function hapus($id_pengajuan){
-		if( $this->model('LombaModel')->deleteLomba($id_pengajuan) > 0 ) {
-			Flasher::setMessage('Berhasil','dihapus','success');
-			header('location: '. BASE_URL . '/lomba');
-			exit;			
-		}else{
-			Flasher::setMessage('Gagal','dihapus','danger');
-			header('location: '. BASE_URL . '/lomba');
-			exit;	
-		}
-	}
 }

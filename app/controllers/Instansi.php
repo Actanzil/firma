@@ -82,16 +82,4 @@ class Instansi extends Controller {
 			exit;	
 		}
 	}
-
-	public function hapus($id_pengajuan){
-		if( $this->model('InstansiModel')->deleteInstansi($id_pengajuan) > 0 ) {
-			Flasher::setMessage('Berhasil','dihapus','success');
-			header('location: '. BASE_URL . '/instansi');
-			exit;			
-		}else{
-			Flasher::setMessage('Gagal','dihapus','danger');
-			header('location: '. BASE_URL . '/instansi');
-			exit;	
-		}
-	}
 }

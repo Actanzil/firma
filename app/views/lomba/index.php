@@ -56,7 +56,6 @@
                 <?php if ($row['status']=="Pengajuan Berkas") {?>
                   <a href="<?= BASE_URL;?>/lomba/penilaian/<?= $row['kode_pengajuan']; ?>" class="btn btn-sm btn-warning" title="Berikan Penilaian"><i class="fas fa-edit"></i></a>
                 <?php } ?>
-                  <a href="<?= BASE_URL;?>/lomba/hapus/<?= $row['kode_pengajuan']; ?>" class="btn btn-sm btn-danger" title="Hapus Pengajuan"><i class="fas fa-trash"></i></a>
               </td>
             </tr>
             <?php 

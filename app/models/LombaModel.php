@@ -144,15 +144,6 @@ class LombaModel {
 		return $this->db->rowCount();
 	}
 
-	public function deleteLomba($kode_pengajuan)
-	{
-		$this->db->query('DELETE FROM ' . $this->table . ' WHERE kode_pengajuan=:kode_pengajuan');
-		$this->db->bind('kode_pengajuan',$kode_pengajuan);
-		$this->db->execute();
-
-		return $this->db->rowCount();
-	}
-
 	public function cariLomba()
 	{
 		$key = $_POST['key'];
